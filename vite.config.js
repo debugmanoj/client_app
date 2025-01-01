@@ -10,15 +10,19 @@ export default defineConfig(({ mode }) => {
         name: "client_app",
         filename: "remoteEntry.js",
         exposes: {
-          "./List": "./src/components/List.jsx",
+          "./TodoApp": "./src/App.jsx",
           "./Input": "./src/components/Input.jsx",
         },
         shared: ["react"],
       }),
     ],
+    preview: {
+      port: 4173, // Ensure preview runs only on port 4174
+    },
     build: {
       minify: mode === "production",
-      target: mode === "production" ? "esnext" : "es2015",
+      target: "esnext",  // Change this to esnext or es2020 to enable top-level await
+      // target: mode === "production" ? "esnext" : "es2015",
       cssCodeSplit: mode === "production",
     },
   };

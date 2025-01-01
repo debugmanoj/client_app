@@ -7,12 +7,17 @@ import Input from "./components/Input";
 import List from "./components/List";
 
 function App() {
-  const [count, setCount] = useState(0);
+  const [newTodo, setNewTodo] = useState("");
+  const [todos, setTodos] = useState([]);
+  const onSubmit = () => {
+    setTodos((prev) => [...prev, newTodo]);
+    setNewTodo("");
+  };
 
   return (
     <>
-      <Input value={count} onChange={setCount} onSubmit={console.log} />
-      <List items={["Learn React", "Learn Vite", "Make an awesome app"]} />
+      <Input value={newTodo} onChange={setNewTodo} onSubmit={onSubmit} />
+      <List items={todos} />
     </>
   );
 }
