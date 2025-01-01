@@ -1,8 +1,26 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import federation from "@originjs/vite-plugin-federation";
+import fs from "fs";
+import path from "path";
 
 export default defineConfig(({ mode }) => {
+  // Load package.json dynamically
+  const packageJson = JSON.parse(
+    fs.readFileSync(path.resolve(__dirname, "package.json"), "utf-8")
+  );
+
+  // Dynamically create shared dependencies object
+  const sharedDependencies = Object.keys(packageJson.dependencies).reduce(
+    (acc, dep) => {
+      acc[dep] = {
+        singleton: true,
+        requiredVersion: packageJson.dependencies[dep],
+      };
+      return acc;
+    },
+    {}
+  );
   return {
     plugins: [
       react(),
@@ -13,7 +31,7 @@ export default defineConfig(({ mode }) => {
           "./TodoApp": "./src/App.jsx",
           "./Input": "./src/components/Input.jsx",
         },
-        shared: ["react"],
+        shared: ["react",'react-dom'],
       }),
     ],
     preview: {
